@@ -1,5 +1,6 @@
 package com.patika.bloghubuserservice.controller;
 
+import com.patika.bloghubuserservice.dto.request.UserLoginRequest;
 import com.patika.bloghubuserservice.dto.request.UserSaveRequest;
 import com.patika.bloghubuserservice.dto.response.GenericResponse;
 import com.patika.bloghubuserservice.dto.response.UserResponse;
@@ -19,8 +20,13 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping()
-    public GenericResponse<UserResponse> createUser(@RequestBody UserSaveRequest request) {
+    @PostMapping("/login")
+    public GenericResponse<UserResponse> login(@RequestBody UserLoginRequest request) {
+        return GenericResponse.success(userService.login(request), HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    public GenericResponse<UserResponse> register(@RequestBody UserSaveRequest request) {
         return GenericResponse.success(userService.saveUser(request), HttpStatus.CREATED);
     }
 

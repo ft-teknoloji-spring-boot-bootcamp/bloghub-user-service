@@ -1,9 +1,9 @@
 package com.patika.bloghubuserservice.service;
 
-
 import com.patika.bloghubuserservice.client.email.dto.request.enums.EmailTemplate;
 import com.patika.bloghubuserservice.client.email.service.EmailClientService;
 import com.patika.bloghubuserservice.converter.UserConverter;
+import com.patika.bloghubuserservice.dto.request.UserLoginRequest;
 import com.patika.bloghubuserservice.dto.request.UserSaveRequest;
 import com.patika.bloghubuserservice.dto.response.UserResponse;
 import com.patika.bloghubuserservice.exception.BlogHubException;
@@ -13,6 +13,7 @@ import com.patika.bloghubuserservice.model.enums.StatusType;
 import com.patika.bloghubuserservice.producer.RabbitMqProducer;
 import com.patika.bloghubuserservice.producer.dto.SendEmailMessage;
 import com.patika.bloghubuserservice.repository.UserRepository;
+import com.patika.bloghubuserservice.utils.PasswordUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -87,5 +88,14 @@ public class UserService {
         return userRepository.findAll()
                 .stream()
                 .collect(Collectors.toMap(User::getEmail, Function.identity()));
+    }
+
+    public UserResponse login(UserLoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BlogHubException(ExceptionMessages.USER_NOT_FOUND_OR_PASSWORD_IS_WRONG));
+
+        PasswordUtils.validatePassword(user.getPassword(), request.getPassword());
+
+        return UserConverter.toResponse(user);
     }
 }
