@@ -20,16 +20,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/login")
-    public GenericResponse<UserResponse> login(@RequestBody UserLoginRequest request) {
-        return GenericResponse.success(userService.login(request), HttpStatus.OK);
-    }
-
-    @PostMapping("/register")
-    public GenericResponse<UserResponse> register(@RequestBody UserSaveRequest request) {
-        return GenericResponse.success(userService.saveUser(request), HttpStatus.CREATED);
-    }
-
     @GetMapping("/{email}")
     public GenericResponse<UserResponse> getUserByEmail(@PathVariable String email) {
         return GenericResponse.success(userService.getUserByEmail(email), HttpStatus.OK);
