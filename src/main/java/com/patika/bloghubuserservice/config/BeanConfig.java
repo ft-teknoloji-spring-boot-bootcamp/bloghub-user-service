@@ -23,7 +23,9 @@ public class BeanConfig {
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
         AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
-        auth.userDetailsService(userDetailService).passwordEncoder(bCryptPasswordEncoder);
+        auth
+                .userDetailsService(userDetailService)
+                .passwordEncoder(bCryptPasswordEncoder);
         return auth.build();
     }
 }

@@ -37,7 +37,9 @@ public class AuthService {
             throw new BlogHubException(ExceptionMessages.USER_ALREADY_DEFINED);
         }
 
-        Role adminRole = roleRepository.findAll().stream().filter(role -> role.getName().equals("ADMIN"))
+        Role adminRole = roleRepository.findAll()
+                .stream()
+                .filter(role -> role.getName().equals("ADMIN"))
                 .findFirst()
                 .orElseThrow(() -> new BlogHubException(ExceptionMessages.ROLE_NOT_FOUND));
 
