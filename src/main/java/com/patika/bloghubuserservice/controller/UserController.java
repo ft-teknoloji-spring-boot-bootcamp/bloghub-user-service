@@ -22,7 +22,8 @@ public class UserController {
 
     @GetMapping("/{email}")
     public GenericResponse<UserResponse> getUserByEmail(@PathVariable String email) {
-        return GenericResponse.success(userService.getUserByEmail(email), HttpStatus.OK);
+        UserResponse response = userService.getUserByEmail(email);
+        return GenericResponse.success(response, HttpStatus.OK);
     }
 
     @GetMapping
